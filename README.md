@@ -1,5 +1,5 @@
 # elibGrabber
-Downloads rare books scans from some public repositories
+Downloads rare books scans from some public libraries
 ------------------------
 
 Actually, it's quickly written PHP console tool for downloading books scans from some public libraries.

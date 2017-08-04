@@ -2,13 +2,13 @@
 
 // params to set
 
-$totalPages = 313;
-$bookId = '01003709015';
-$downloadFolder = '/home/kirill/orpk/zen_ubiycy';
-$currentMode = 'dlib';
+$totalPages = 0;
+$bookId = '';
+$downloadFolder = '';
+$currentMode = '';
 
 // optional params
-$startingPage = 2802655;
+$startingPage = 0;
 
 // supports
 $modes = [

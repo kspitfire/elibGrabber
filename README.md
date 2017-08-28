@@ -38,7 +38,7 @@ with such structure:
    This run will download a full requested document (as described at pointed mode) from page 3 to current directory.
    If you want to cut off total pages, change download folder of edit starting page, see full list of available options below.
    
- Full list of options:
+ ## Full list of options:
   - --mode  <mode_name>   - **[required]** selected mode for downloading a document
   - --total <total_pages> - **[required]** point total number of pages you need
   - --start <start_page>  - page to start from

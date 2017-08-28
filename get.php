@@ -1,21 +1,32 @@
 <?php
 
-// params to set
+include_once 'config.php';
 
-$totalPages = 0;
-$bookId = '';
-$downloadFolder = '';
-$currentMode = '';
+$currentOptions = getopt('', ['mode:', 'total:', 'id::', 'start::', 'path::']);
 
-// optional params
-$startingPage = 0;
+// Initializing options
+if (empty($currentOptions['total'])) {
+    echo sprintf("You need to point total pages of requested document. %sUse `--total` option%s", PHP_EOL, PHP_EOL);
+    die();
+} else {
+    $totalPages = $currentOptions['total'];
+}
 
-// supports
-$modes = [
-    'dlib' => 'http://dlib.rsl.ru/viewer/pdf?docId=%s&page=%d',
-    'elib.shpl' => 'http://elib.shpl.ru/pages/%s/zooms/8',
-    'elib.tomsk' => 'http://elib.tomsk.ru/elib/data/%s/%s.jpg',
-];
+if (empty($currentOptions['mode'])) {
+    echo sprintf("You need to choose mode for downloading.%sUse `--mode` option.%sAll modes defined at config.php.%s", PHP_EOL, PHP_EOL, PHP_EOL);
+    die();
+} else {
+    $currentMode = $currentOptions['mode'];
+
+    if (empty($modes[$currentMode])) {
+        echo sprintf("Mode `%s` did not configured. Check your config.php file.%s", $currentMode, PHP_EOL);
+        die();
+    }
+}
+
+$bookId = (!empty($currentOptions['id'])) ? $currentOptions['id'] : null;
+$startingPage = (!empty($currentOptions['start'])) ? $currentOptions['start'] : 0;
+$downloadFolder = (!empty($currentOptions['path'])) ? $currentOptions['path'] : __DIR__;
 
 echo 'Starting ...'.PHP_EOL;
 
@@ -36,7 +47,7 @@ for ($i = 0; $i <= $totalPages; $i++) {
 
     switch ($currentMode) {
         case 'dlib':
-            $file = file_get_contents(sprintf($modes[$currentMode], $bookId, $i));
+            $file = file_get_contents(sprintf($modes[$currentMode]['url_pattern'], $bookId, $i));
             break;
         case 'elib.shpl':
             if (empty($startingPage)) {
@@ -44,7 +55,7 @@ for ($i = 0; $i <= $totalPages; $i++) {
             }
 
             $currentPage = $startingPage + $i;
-            $file = file_get_contents(sprintf($modes[$currentMode], $currentPage));
+            $file = file_get_contents(sprintf($modes[$currentMode]['url_pattern'], $currentPage));
             break;
         case 'elib.tomsk':
             if (empty($startingPage)) {
@@ -52,7 +63,7 @@ for ($i = 0; $i <= $totalPages; $i++) {
             }
 
             $currentPage = $startingPage + $i;
-            $file = file_get_contents(sprintf($modes[$currentMode], $bookId, $currentPage));
+            $file = file_get_contents(sprintf($modes[$currentMode]['url_pattern'], $bookId, $currentPage));
             break;
         default:
             throw new \Exception(sprintf('Unknown mode "%s"!', $currentMode));
@@ -64,4 +75,3 @@ for ($i = 0; $i <= $totalPages; $i++) {
 }
 
 echo PHP_EOL.'DONE! :)'.PHP_EOL;
-?>

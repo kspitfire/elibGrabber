@@ -41,9 +41,9 @@ with such structure:
  ## Full list of options:
   - --mode  <mode_name>   - **[required]** selected mode for downloading a document
   - --total <total_pages> - **[required]** point total number of pages you need
-  - --start <start_page>  - page to start from
-  - --path <download_dir> - path to download dir. If not set, script will try to download files to current folder. If you point a non-existing folder, script'll try to create it.
-  - --id <document_ID>    - some public libraries use ID for each document to get access to. It's an option to point it.
+  - --start=<start_page>  - page to start from
+  - --path=<download_dir> - path to download dir. If not set, script will try to download files to current folder. If you point a non-existing folder, script'll try to create it.
+  - --id=<document_ID>    - some public libraries use ID for each document to get access to. It's an option to point it.
   
   
  

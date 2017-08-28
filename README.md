@@ -14,7 +14,8 @@ Supports by default:
   
  Now it's pretty raw, ugly and written just for me, but it works.
  
-##Configuration
+## Configuration
+
 Here's `config.php` file with all current modes available. Point your mode at `$modes` array
 with such structure:
 
@@ -28,7 +29,8 @@ with such structure:
 
 ...
 ```
- ##Usage:
+
+ ## Usage:
  You can run `get.php` from CLI with options like in this example
  
    `php get.php --mode <mode_name> --total <total_pages> --start=3`

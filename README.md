@@ -1,6 +1,4 @@
 # elibGrabber
-Downloads rare books scans from some public libraries
-------------------------
 
 ## Summary
 
@@ -29,6 +27,7 @@ with such structure:
 
 ...
 ```
+Actually, modes is just a pattern string, containing common url for getting document files from remote library. It'll be applied as pattern string for [sprintf](http://php.net/manual/en/function.sprintf.php) function, so you need also point all variables that will be used for injecting to a pattern string.
 
  ## Usage:
  You can run `get.php` from CLI with options like at this example

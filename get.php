@@ -2,9 +2,16 @@
 
 include_once 'config.php';
 
-$currentOptions = getopt('', ['mode:', 'total:', 'id::', 'start::', 'path::']);
+$currentOptions = getopt('s:', ['mode:', 'total:', 'id::', 'start::', 'path::', 'keep::']);
 
 // Initializing options
+if (empty($currentOptions['s'])) {
+    echo sprintf("Please, provide a name for output file. %sUse `-s` option%s", PHP_EOL, PHP_EOL);
+    die();
+} else {
+    $outputFileName = $currentOptions['s'];
+}
+
 if (empty($currentOptions['total'])) {
     echo sprintf("You need to point total pages of requested document. %sUse `--total` option%s", PHP_EOL, PHP_EOL);
     die();
@@ -24,9 +31,11 @@ if (empty($currentOptions['mode'])) {
     }
 }
 
+$outputFile = isset($currentOptions['s']);
 $bookId = (!empty($currentOptions['id'])) ? $currentOptions['id'] : null;
 $startingPage = (!empty($currentOptions['start'])) ? $currentOptions['start'] : 0;
 $downloadFolder = (!empty($currentOptions['path'])) ? $currentOptions['path'] : __DIR__;
+$needToKeepTempFiles = isset($currentOptions['keep']);
 
 echo 'Starting ...'.PHP_EOL;
 
@@ -42,6 +51,7 @@ if (false === is_writable($downloadFolder)) {
     throw new \Exception(sprintf('Directory `%s` is not writeable', $downloadFolder));
 }
 
+$storedImages = [];
 for ($i = 0; $i <= $totalPages; $i++) {
     echo sprintf('Page %d ... ', $i);
 
@@ -70,8 +80,27 @@ for ($i = 0; $i <= $totalPages; $i++) {
             break;
     }
 
-    file_put_contents(sprintf('%s/%s', $downloadFolder, $i.'.jpg'), $file);
-    echo 'OK'.PHP_EOL;
+    $fullpath = sprintf('%s/%s', $downloadFolder, $i.'.jpg');
+    file_put_contents($fullpath, $file);
+    $storedImages[] = $fullpath;
+
+    echo sprintf('OK%s', PHP_EOL);
 }
 
-echo PHP_EOL.'DONE! :)'.PHP_EOL;
+if (!empty($storedImages) && $outputFile) {
+    echo sprintf('%sStart compiling PDF ...%s', PHP_EOL, PHP_EOL);
+
+    $outputPdf = new \Imagick($storedImages);
+    $outputPdf->setImageFormat('pdf');
+    $outputPdf->writeImages(sprintf('%s/%s', $downloadFolder, $outputFileName), true);
+
+    if (false === $needToKeepTempFiles) {
+        echo sprintf('%sCleaning tmp files... %s', PHP_EOL, PHP_EOL);
+
+        foreach ($storedImages as $file) {
+            unlink($file);
+        }
+    }
+}
+
+echo sprintf('%sDone!%s', PHP_EOL, PHP_EOL);

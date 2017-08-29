@@ -24,14 +24,14 @@ with such structure:
 
 'mode_name' -> [
     'url_pattern' => '', // it's an URL string for sprintf() function
-    'options' => [],     // array of required options for injecting to pattern (NOT WORKING YET)
+    'options' => [],     // array of required options for injecting to pattern (*NOT WORKING YET*)
 ],
 
 ...
 ```
 
  ## Usage:
- You can run `get.php` from CLI with options like in this example
+ You can run `get.php` from CLI with options like at this example
  
    `php get.php --mode <mode_name> --total <total_pages> --start=3`
    
@@ -39,7 +39,7 @@ with such structure:
    If you want to cut off total pages, change download folder of edit starting page, see full list of available options below.
    
  ## Full list of options:
-  - --mode  <mode_name>   - **[required]** selected mode for downloading a document
+  - --mode  <mode_name>   - **[required]** selected mode for downloading a document (see: [config.php](config.php))
   - --total <total_pages> - **[required]** point total number of pages you need
   - --start=<start_page>  - page to start from
   - --path=<download_dir> - path to download dir. If not set, script will try to download files to current folder. If you point a non-existing folder, script'll try to create it.
